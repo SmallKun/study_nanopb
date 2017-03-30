@@ -1,10 +1,15 @@
 # study_nanopb
 study_nanopb
 
+# install python-protobuf
+```
+sudo pip install protobuf
+```
+
 # build
 ```
 cd simple
-make reader
+make
 ```
 
 # run
