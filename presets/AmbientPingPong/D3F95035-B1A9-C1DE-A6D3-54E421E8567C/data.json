@@ -1,0 +1,289 @@
+{
+   "panelStyle" : "HorizontalTypeHagibis",
+   "sigPath" : {
+      "blocks" : {
+         "items" : [
+            {
+               "id" : "bias.bdeq1",
+               "isActive" : false,
+               "name" : "Untitled",
+               "params" : [
+                  {
+                     "id" : 0,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 1,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 2,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 3,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 4,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 5,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 6,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 7,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 8,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 9,
+                     "value" : 1
+                  }
+               ],
+               "selected" : "false"
+            },
+            {
+               "id" : "bias.pingpongDelay",
+               "isActive" : true,
+               "name" : "Untitled",
+               "params" : [
+                  {
+                     "id" : 0,
+                     "value" : 0.12421880662441254
+                  },
+                  {
+                     "id" : 1,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 2,
+                     "value" : 0.78549957275390625
+                  },
+                  {
+                     "id" : 3,
+                     "value" : 0.74723970890045166
+                  },
+                  {
+                     "id" : 4,
+                     "value" : 0.19458930194377899
+                  },
+                  {
+                     "id" : 5,
+                     "value" : 0.38302499055862427
+                  },
+                  {
+                     "id" : 6,
+                     "value" : 0.44118601083755493
+                  },
+                  {
+                     "id" : 7,
+                     "value" : 0.4107741117477417
+                  },
+                  {
+                     "id" : 8,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 9,
+                     "value" : 0.43999999761581421
+                  },
+                  {
+                     "id" : 10,
+                     "value" : 0.56999999284744263
+                  },
+                  {
+                     "id" : 11,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 12,
+                     "value" : 1
+                  }
+               ],
+               "selected" : "false"
+            },
+            {
+               "id" : "bias.toneStage",
+               "isActive" : true,
+               "name" : "Untitled",
+               "params" : [
+                  {
+                     "id" : 0,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 1,
+                     "value" : 0.30000001192092896
+                  },
+                  {
+                     "id" : 2,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 3,
+                     "value" : 0.0020000000949949026
+                  },
+                  {
+                     "id" : 4,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 5,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 6,
+                     "value" : 0.3047327995300293
+                  },
+                  {
+                     "id" : 7,
+                     "value" : 0.36635419726371765
+                  },
+                  {
+                     "id" : 8,
+                     "value" : 0.64999997615814209
+                  },
+                  {
+                     "id" : 9,
+                     "value" : 0.30745071172714233
+                  },
+                  {
+                     "id" : 10,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 11,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 12,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 13,
+                     "value" : 0.73000001907348633
+                  },
+                  {
+                     "id" : 14,
+                     "value" : 0.68000000715255737
+                  }
+               ],
+               "selected" : "false"
+            },
+            {
+               "id" : "bias.power",
+               "isActive" : true,
+               "name" : "Untitled",
+               "params" : [
+                  {
+                     "id" : 0,
+                     "value" : 0.0010000000474974513
+                  },
+                  {
+                     "id" : 1,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 2,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 3,
+                     "value" : 0
+                  },
+                  {
+                     "id" : 4,
+                     "value" : 0.36158621311187744
+                  },
+                  {
+                     "id" : 5,
+                     "value" : 0.22973869740962982
+                  }
+               ],
+               "selected" : "false"
+            },
+            {
+               "id" : "bias.bdeq2",
+               "isActive" : false,
+               "name" : "Untitled",
+               "params" : [
+                  {
+                     "id" : 0,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 1,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 2,
+                     "value" : 0.56199997663497925
+                  },
+                  {
+                     "id" : 3,
+                     "value" : 0.62699997425079346
+                  },
+                  {
+                     "id" : 4,
+                     "value" : 0.35400000214576721
+                  },
+                  {
+                     "id" : 5,
+                     "value" : 0.42399999499320984
+                  },
+                  {
+                     "id" : 6,
+                     "value" : 0.41899999976158142
+                  },
+                  {
+                     "id" : 7,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 8,
+                     "value" : 0.5
+                  },
+                  {
+                     "id" : 9,
+                     "value" : 1
+                  }
+               ],
+               "selected" : "false"
+            }
+         ]
+      },
+      "metronome" : {
+         "bpm" : 120,
+         "isActive" : true
+      },
+      "noisegate" : {
+         "id" : "",
+         "isActive" : false,
+         "name" : "Untitled",
+         "params" : [
+            {
+               "id" : 0,
+               "value" : 0.30000001192092896
+            },
+            {
+               "id" : 1,
+               "value" : 0.30000001192092896
+            },
+            {
+               "id" : 2,
+               "value" : 1
+            }
+         ],
+         "selected" : ""
+      }
+   }
+}
