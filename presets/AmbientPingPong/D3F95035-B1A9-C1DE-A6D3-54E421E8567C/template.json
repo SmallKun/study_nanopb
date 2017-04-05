@@ -1,0 +1,80 @@
+{
+   "Box" : "Box_Blue.png",
+   "Control" : "Control_5Knob.png",
+   "Texture" : "",
+   "elements" : {
+      "items" : [
+         {
+            "indexID" : [
+               "bias.standardDelay",
+               "bias.tapeDelay",
+               "bias.pingpongDelay",
+               "bias.reverseDelay"
+            ],
+            "paramID" : "0",
+            "position" : "52,170,173,173",
+            "res" : "LiveKnob03White",
+            "type" : "knob"
+         },
+         {
+            "indexID" : [
+               "bias.standardDelay",
+               "bias.tapeDelay",
+               "bias.pingpongDelay",
+               "bias.reverseDelay"
+            ],
+            "paramID" : "2",
+            "position" : "202,170,173,173",
+            "res" : "LiveKnob03White",
+            "type" : "knob"
+         },
+         {
+            "indexID" : [
+               "bias.standardDelay",
+               "bias.tapeDelay",
+               "bias.pingpongDelay",
+               "bias.reverseDelay"
+            ],
+            "paramID" : "3",
+            "position" : "353,170,173,173",
+            "res" : "LiveKnob03White",
+            "type" : "knob"
+         },
+         {
+            "indexID" : [
+               "bias.standardDelay",
+               "bias.tapeDelay",
+               "bias.pingpongDelay",
+               "bias.reverseDelay"
+            ],
+            "paramID" : "4",
+            "position" : "503,170,173,173",
+            "res" : "LiveKnob03White",
+            "type" : "knob"
+         },
+         {
+            "indexID" : [ "bias.toneStage" ],
+            "paramID" : "7",
+            "position" : "654,170,173,173",
+            "res" : "LiveKnob03White",
+            "type" : "knob"
+         },
+         {
+            "indexID" : [
+               "bias.standardDelay",
+               "bias.tapeDelay",
+               "bias.pingpongDelay",
+               "bias.reverseDelay"
+            ],
+            "paramID" : "10",
+            "position" : "803,170,173,173",
+            "res" : "LiveKnob03White",
+            "type" : "knob"
+         }
+      ]
+   },
+   "font-family" : "CircularStd-Black",
+   "panelStyle" : "HorizontalTypeHagibis",
+   "showsKnobs" : 5,
+   "templateId" : ""
+}
