@@ -6,13 +6,6 @@
 static uint8_t buffer_encode[2048];
 static uint8_t buffer_decode[2048];
 
-bool subMessage11EncodeCb(pb_ostream_t *stream, const pb_field_t *field,
-    void * const *arg)
-{
-  printf(">>%s\n", __FUNCTION__);
-  return true;
-}
-
 void hexDump(char *desc, void *addr, int len)
 {
     int i;
@@ -135,17 +128,15 @@ void PreparePresetContent(presets_CPresetAmbientPingPong* encode_msg)
     encode_msg->sigPath.metronome.isActive = true;
 
     // Fill noisegate fields
-    /* encode_msg->sigPath.noisegate.params.funcs.encode = &subMessage11EncodeCb; */
-    /* encode_msg->sigPath.noisegate.params.arg = NULL; */
     encode_msg->sigPath.has_noisegate = true;
     encode_msg->sigPath.noisegate.has_id = true;
-    strncpy(encode_msg->sigPath.noisegate.id, "fakeId", strlen("fakeId"));
+    strncpy(encode_msg->sigPath.noisegate.id, "", strlen(""));
     encode_msg->sigPath.noisegate.has_isActive = true;
     encode_msg->sigPath.noisegate.isActive = true;
     encode_msg->sigPath.noisegate.has_name = true;
     strncpy(encode_msg->sigPath.noisegate.name, "Untitled", strlen("Untitled"));
     encode_msg->sigPath.noisegate.has_selected = true;
-    strncpy(encode_msg->sigPath.noisegate.selected, "fakeSelected", strlen("fakeSelected"));
+    strncpy(encode_msg->sigPath.noisegate.selected, "", strlen(""));
     encode_msg->sigPath.noisegate.params_count = 3;
     for (int i = 0; i < encode_msg->sigPath.noisegate.params_count; i++)
     {
@@ -169,7 +160,7 @@ void PreparePresetContent(presets_CPresetAmbientPingPong* encode_msg)
         item->has_name = true;
         strncpy(item->name, "Untitled", strlen("Untitled"));
         item->has_selected = true;
-        strncpy(item->selected, "fakeSelected", strlen("fakeSelected"));
+        strncpy(item->selected, "false", strlen("false"));
         item->params_count = 15;
         for (int i = 0; i < item->params_count; i++)
         {
