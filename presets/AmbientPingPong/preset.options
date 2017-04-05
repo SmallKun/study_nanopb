@@ -9,7 +9,7 @@
 # On the other hand, using the callback interface, it is not necessary
 # to set a limit on the number of files in the response.
 
-presets.CPresetAmbientPingPong.panelStyle   max_size:64
+presets.CPresetDataJson.panelStyle   max_size:64
 
 presets.CSigPath.CNoisegate.id              max_size:64
 presets.CSigPath.CNoisegate.name            max_size:64

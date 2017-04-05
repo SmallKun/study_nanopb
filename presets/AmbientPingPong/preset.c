@@ -59,7 +59,7 @@ void hexDump(char *desc, void *addr, int len)
     printf ("  %s\n", buff);
 }
 
-void PrintPreset(const presets_CPresetAmbientPingPong* decode_msg)
+void PrintPreset(const presets_CPresetDataJson* decode_msg)
 {
     printf("has_panelStyle:%d\n", decode_msg->has_panelStyle);
     printf("panelStyle:\"%s\"\n", decode_msg->panelStyle);
@@ -113,7 +113,7 @@ void PrintPreset(const presets_CPresetAmbientPingPong* decode_msg)
     }
 }
 
-void PreparePresetContent(presets_CPresetAmbientPingPong* encode_msg)
+void PreparePresetContent(presets_CPresetDataJson* encode_msg)
 {
     encode_msg->has_panelStyle = true;
     strncpy(encode_msg->panelStyle, "HorizontalTypeHagibis", strlen("HorizontalTypeHagibis"));
@@ -192,12 +192,12 @@ int main()
          * It is a good idea to always initialize your structures
          * so that you do not have garbage data from RAM in there.
          */
-        presets_CPresetAmbientPingPong encode_msg = presets_CPresetAmbientPingPong_init_zero;
+        presets_CPresetDataJson encode_msg = presets_CPresetDataJson_init_zero;
         /* Fill in the message */
         PreparePresetContent(&encode_msg);
 
         /* Now we are ready to encode the message! */
-        status = pb_encode(&stream, presets_CPresetAmbientPingPong_fields, &encode_msg);
+        status = pb_encode(&stream, presets_CPresetDataJson_fields, &encode_msg);
         /* Then just check for any errors.. */
         if (!status)
         {
@@ -227,8 +227,8 @@ int main()
         pb_istream_t stream = pb_istream_from_buffer(buffer_decode, message_length);
 
         /* Now we are ready to decode the decode_msg. */
-        presets_CPresetAmbientPingPong decode_msg = presets_CPresetAmbientPingPong_init_zero;
-        status = pb_decode(&stream, presets_CPresetAmbientPingPong_fields, &decode_msg);
+        presets_CPresetDataJson decode_msg = presets_CPresetDataJson_init_zero;
+        status = pb_decode(&stream, presets_CPresetDataJson_fields, &decode_msg);
 
         /* Check for errors... */
         if (!status)

@@ -10,6 +10,7 @@ package presets;
 // [END declaration]
 
 // [START messages]
+// ======== data.json ========
 message CParam {
     optional int32 id = 1;
     optional float value = 2;
@@ -46,8 +47,10 @@ message CSigPath {
     optional CNoisegate noisegate = 3;
 }
 
-message CPresetAmbientPingPong {
+message CPresetDataJson {
     optional string panelStyle = 1;
     optional CSigPath sigPath = 2;
 }
+// ===========================
+
 // [END messages]
