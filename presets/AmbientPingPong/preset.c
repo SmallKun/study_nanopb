@@ -59,40 +59,44 @@ void hexDump(char *desc, void *addr, int len)
     printf ("  %s\n", buff);
 }
 
-void PrintPreset(const presets_CPresetDataJson* decode_msg)
+void PrintPreset(const presets_CPresetAllData* all_data)
 {
-    printf("has_panelStyle:%d\n", decode_msg->has_panelStyle);
-    printf("panelStyle:\"%s\"\n", decode_msg->panelStyle);
-    printf("has_sigPath:%d\n", decode_msg->has_sigPath);
-    printf("\t decode_msg->sigPath.has_metronome:%d\n", decode_msg->sigPath.has_metronome);
-    printf("\t decode_msg->sigPath.metronome.has_bpm:%d\n", decode_msg->sigPath.metronome.has_bpm);
-    printf("\t decode_msg->sigPath.metronome.bpm:%u\n", decode_msg->sigPath.metronome.bpm);
-    printf("\t decode_msg->sigPath.metronome.has_isActive:%d\n", decode_msg->sigPath.metronome.has_isActive);
-    printf("\t decode_msg->sigPath.metronome.isActive:%d\n", decode_msg->sigPath.metronome.isActive);
+    printf("all_data->has_dataJson:%d\n", all_data->has_dataJson);
 
-    printf("\t decode_msg->sigPath.has_noisegate:%d\n", decode_msg->sigPath.has_noisegate);
-    printf("\t decode_msg->sigPath.noisegate.has_id:%d\n", decode_msg->sigPath.noisegate.has_id);
-    printf("\t decode_msg->sigPath.noisegate.id:\"%s\"\n", decode_msg->sigPath.noisegate.id);
-    printf("\t decode_msg->sigPath.noisegate.has_isActive:%d\n", decode_msg->sigPath.noisegate.has_isActive);
-    printf("\t decode_msg->sigPath.noisegate.isActive:%d\n", decode_msg->sigPath.noisegate.isActive);
-    printf("\t decode_msg->sigPath.noisegate.has_name:%d\n", decode_msg->sigPath.noisegate.has_name);
-    printf("\t decode_msg->sigPath.noisegate.name:\"%s\"\n", decode_msg->sigPath.noisegate.name);
-    printf("\t decode_msg->sigPath.noisegate.has_selected:%d\n", decode_msg->sigPath.noisegate.has_selected);
-    printf("\t decode_msg->sigPath.noisegate.selected:\"%s\"\n", decode_msg->sigPath.noisegate.selected);
-    for (int i = 0; i < decode_msg->sigPath.noisegate.params_count; i++)
+    const presets_CPresetDataJson* dataJson = &(all_data->dataJson);
+
+    printf("has_panelStyle:%d\n", dataJson->has_panelStyle);
+    printf("panelStyle:\"%s\"\n", dataJson->panelStyle);
+    printf("has_sigPath:%d\n", dataJson->has_sigPath);
+    printf("\t dataJson->sigPath.has_metronome:%d\n", dataJson->sigPath.has_metronome);
+    printf("\t dataJson->sigPath.metronome.has_bpm:%d\n", dataJson->sigPath.metronome.has_bpm);
+    printf("\t dataJson->sigPath.metronome.bpm:%u\n", dataJson->sigPath.metronome.bpm);
+    printf("\t dataJson->sigPath.metronome.has_isActive:%d\n", dataJson->sigPath.metronome.has_isActive);
+    printf("\t dataJson->sigPath.metronome.isActive:%d\n", dataJson->sigPath.metronome.isActive);
+
+    printf("\t dataJson->sigPath.has_noisegate:%d\n", dataJson->sigPath.has_noisegate);
+    printf("\t dataJson->sigPath.noisegate.has_id:%d\n", dataJson->sigPath.noisegate.has_id);
+    printf("\t dataJson->sigPath.noisegate.id:\"%s\"\n", dataJson->sigPath.noisegate.id);
+    printf("\t dataJson->sigPath.noisegate.has_isActive:%d\n", dataJson->sigPath.noisegate.has_isActive);
+    printf("\t dataJson->sigPath.noisegate.isActive:%d\n", dataJson->sigPath.noisegate.isActive);
+    printf("\t dataJson->sigPath.noisegate.has_name:%d\n", dataJson->sigPath.noisegate.has_name);
+    printf("\t dataJson->sigPath.noisegate.name:\"%s\"\n", dataJson->sigPath.noisegate.name);
+    printf("\t dataJson->sigPath.noisegate.has_selected:%d\n", dataJson->sigPath.noisegate.has_selected);
+    printf("\t dataJson->sigPath.noisegate.selected:\"%s\"\n", dataJson->sigPath.noisegate.selected);
+    for (int i = 0; i < dataJson->sigPath.noisegate.params_count; i++)
     {
-        const presets_CParam* param = &decode_msg->sigPath.noisegate.params[i];
+        const presets_CParam* param = &dataJson->sigPath.noisegate.params[i];
         printf("\t\t param->has_id:%d\n", param->has_id);
         printf("\t\t param->id:%d\n", param->id);
         printf("\t\t param->has_value:%d\n", param->has_value);
         printf("\t\t param->value:%f\n", param->value);
     }
 
-    printf("\t decode_msg->sigPath.has_blocks:%d\n", decode_msg->sigPath.has_blocks);
-    printf("\t decode_msg->sigPath.blocks.items_count:%d\n", decode_msg->sigPath.blocks.items_count);
-    for (int i = 0; i < decode_msg->sigPath.blocks.items_count; i++)
+    printf("\t dataJson->sigPath.has_blocks:%d\n", dataJson->sigPath.has_blocks);
+    printf("\t dataJson->sigPath.blocks.items_count:%d\n", dataJson->sigPath.blocks.items_count);
+    for (int i = 0; i < dataJson->sigPath.blocks.items_count; i++)
     {
-        const presets_CSigPath_CBlocks_CItem* item = &decode_msg->sigPath.blocks.items[i];
+        const presets_CSigPath_CBlocks_CItem* item = &dataJson->sigPath.blocks.items[i];
         printf("\t item[%d]\n", i);
         printf("\t item->has_id:%d\n", item->has_id);
         printf("\t item->id:\"%s\"\n", item->id);
@@ -113,34 +117,37 @@ void PrintPreset(const presets_CPresetDataJson* decode_msg)
     }
 }
 
-void PreparePresetContent(presets_CPresetDataJson* encode_msg)
+void PreparePresetContent(presets_CPresetAllData* all_data)
 {
-    encode_msg->has_panelStyle = true;
-    strncpy(encode_msg->panelStyle, "HorizontalTypeHagibis", strlen("HorizontalTypeHagibis"));
+    all_data->has_dataJson = true;
 
-    encode_msg->has_sigPath = true;
+    presets_CPresetDataJson* dataJson = &(all_data->dataJson);
+    dataJson->has_panelStyle = true;
+    strncpy(dataJson->panelStyle, "HorizontalTypeHagibis", strlen("HorizontalTypeHagibis"));
+
+    dataJson->has_sigPath = true;
 
     // Fill metronome fields
-    encode_msg->sigPath.has_metronome = true;
-    encode_msg->sigPath.metronome.has_bpm = true;
-    encode_msg->sigPath.metronome.bpm = 120;
-    encode_msg->sigPath.metronome.has_isActive = true;
-    encode_msg->sigPath.metronome.isActive = true;
+    dataJson->sigPath.has_metronome = true;
+    dataJson->sigPath.metronome.has_bpm = true;
+    dataJson->sigPath.metronome.bpm = 120;
+    dataJson->sigPath.metronome.has_isActive = true;
+    dataJson->sigPath.metronome.isActive = true;
 
     // Fill noisegate fields
-    encode_msg->sigPath.has_noisegate = true;
-    encode_msg->sigPath.noisegate.has_id = true;
-    strncpy(encode_msg->sigPath.noisegate.id, "", strlen(""));
-    encode_msg->sigPath.noisegate.has_isActive = true;
-    encode_msg->sigPath.noisegate.isActive = true;
-    encode_msg->sigPath.noisegate.has_name = true;
-    strncpy(encode_msg->sigPath.noisegate.name, "Untitled", strlen("Untitled"));
-    encode_msg->sigPath.noisegate.has_selected = true;
-    strncpy(encode_msg->sigPath.noisegate.selected, "", strlen(""));
-    encode_msg->sigPath.noisegate.params_count = 3;
-    for (int i = 0; i < encode_msg->sigPath.noisegate.params_count; i++)
+    dataJson->sigPath.has_noisegate = true;
+    dataJson->sigPath.noisegate.has_id = true;
+    strncpy(dataJson->sigPath.noisegate.id, "", strlen(""));
+    dataJson->sigPath.noisegate.has_isActive = true;
+    dataJson->sigPath.noisegate.isActive = true;
+    dataJson->sigPath.noisegate.has_name = true;
+    strncpy(dataJson->sigPath.noisegate.name, "Untitled", strlen("Untitled"));
+    dataJson->sigPath.noisegate.has_selected = true;
+    strncpy(dataJson->sigPath.noisegate.selected, "", strlen(""));
+    dataJson->sigPath.noisegate.params_count = 3;
+    for (int i = 0; i < dataJson->sigPath.noisegate.params_count; i++)
     {
-        presets_CParam* param = &encode_msg->sigPath.noisegate.params[i];
+        presets_CParam* param = &dataJson->sigPath.noisegate.params[i];
         param->has_id = true;
         param->id = i;
         param->has_value = true;
@@ -148,11 +155,11 @@ void PreparePresetContent(presets_CPresetDataJson* encode_msg)
     }
 
     // Fill blocks fields
-    encode_msg->sigPath.has_blocks = true;
-    encode_msg->sigPath.blocks.items_count = 5;
-    for (int i = 0; i < encode_msg->sigPath.blocks.items_count; i++)
+    dataJson->sigPath.has_blocks = true;
+    dataJson->sigPath.blocks.items_count = 5;
+    for (int i = 0; i < dataJson->sigPath.blocks.items_count; i++)
     {
-        presets_CSigPath_CBlocks_CItem* item = &encode_msg->sigPath.blocks.items[i];
+        presets_CSigPath_CBlocks_CItem* item = &dataJson->sigPath.blocks.items[i];
         item->has_id = true;
         strncpy(item->id, "bias.pingpongDelay", strlen("bias.pingpongDelay"));
         item->has_isActive = true;
@@ -192,12 +199,12 @@ int main()
          * It is a good idea to always initialize your structures
          * so that you do not have garbage data from RAM in there.
          */
-        presets_CPresetDataJson encode_msg = presets_CPresetDataJson_init_zero;
+        presets_CPresetAllData encode_msg = presets_CPresetAllData_init_zero;
         /* Fill in the message */
         PreparePresetContent(&encode_msg);
 
         /* Now we are ready to encode the message! */
-        status = pb_encode(&stream, presets_CPresetDataJson_fields, &encode_msg);
+        status = pb_encode(&stream, presets_CPresetAllData_fields, &encode_msg);
         /* Then just check for any errors.. */
         if (!status)
         {
@@ -227,8 +234,8 @@ int main()
         pb_istream_t stream = pb_istream_from_buffer(buffer_decode, message_length);
 
         /* Now we are ready to decode the decode_msg. */
-        presets_CPresetDataJson decode_msg = presets_CPresetDataJson_init_zero;
-        status = pb_decode(&stream, presets_CPresetDataJson_fields, &decode_msg);
+        presets_CPresetAllData decode_msg = presets_CPresetAllData_init_zero;
+        status = pb_decode(&stream, presets_CPresetAllData_fields, &decode_msg);
 
         /* Check for errors... */
         if (!status)

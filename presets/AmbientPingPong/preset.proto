@@ -53,4 +53,47 @@ message CPresetDataJson {
 }
 // ===========================
 
+// ======== meta.json ========
+message CPresetMetaJson {
+    optional string category = 1;
+    optional string description = 2;
+    optional string displayName = 3;
+    repeated int32 features = 4;
+    optional string id = 5;
+    optional string version = 6;
+}
+// ===========================
+
+// ======== template.json ========
+message CPresetTemplateJson {
+    message CElements {
+        message CItem {
+            repeated string indexID = 1;
+            optional string paramID = 2;
+            optional string position = 3;
+            optional string res = 4;
+            optional string type = 5;
+        }
+
+        repeated CItem items = 1;
+    }
+
+    optional string Box = 1;
+    optional string Control = 2;
+    optional string Texture = 3;
+    optional CElements elements = 4;
+    optional string fontFamily = 5;
+    optional string panelStyle = 6;
+    optional int32 showsKnobs = 7;
+    optional string templateId = 8;
+}
+// ===========================
+
+message CPresetAllData {
+
+    // Just include all data/meta/template json contents
+    optional CPresetDataJson dataJson = 1;
+    /* optional CPresetMetaJson metaJson = 2; */
+    /* optional CPresetTemplateJson templateJson = 3; */
+}
 // [END messages]
