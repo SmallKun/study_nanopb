@@ -154,6 +154,47 @@ void PrintPreset(const presets_CPresetAllData* all_data)
     // ===========================
 
     // ======== template.json ========
+    printf("all_data->has_templateJson:%d\n", all_data->has_templateJson);
+    if (all_data->has_templateJson)
+    {
+        const presets_CPresetTemplateJson* templateJson = &(all_data->templateJson);
+        if (templateJson->has_Box)
+            printf("Box:\"%s\"\n", templateJson->Box);
+        if (templateJson->has_Control)
+            printf("Control:\"%s\"\n", templateJson->Control);
+        if (templateJson->has_Texture)
+            printf("Texture:\"%s\"\n", templateJson->Texture);
+        if (templateJson->has_fontFamily)
+            printf("fontFamily:\"%s\"\n", templateJson->fontFamily);
+        if (templateJson->has_panelStyle)
+            printf("panelStyle:\"%s\"\n", templateJson->panelStyle);
+        if (templateJson->has_showsKnobs)
+            printf("showsKnobs:%d\n", templateJson->showsKnobs);
+        if (templateJson->has_templateId)
+            printf("templateId:\"%s\"\n", templateJson->templateId);
+        if (templateJson->has_elements)
+        {
+            for (int i = 0; i < templateJson->elements.items_count; i++)
+            {
+                printf("\t item[%d]\n", i);
+
+                const presets_CPresetTemplateJson_CElements_CItem* item = &(templateJson->elements.items[i]);
+                if (item->has_paramID)
+                    printf("\t paramID:\"%s\"\n", item->paramID);
+                if (item->has_position)
+                    printf("\t position:\"%s\"\n", item->position);
+                if (item->has_res)
+                    printf("\t res:\"%s\"\n", item->res);
+                if (item->has_type)
+                    printf("\t type:\"%s\"\n", item->type);
+
+                for (int j = 0; j < item->indexID_count; j++)
+                {
+                    printf("\t\t indexID[%d][0]:\"%s\"\n", j, &(item->indexID[j][0]));
+                }
+            }
+        }
+    }
     // ===========================
 }
 
@@ -244,7 +285,45 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     // ===========================
 
     // ======== template.json ========
-    all_data->has_templateJson = false;
+    all_data->has_templateJson = true;
+
+    presets_CPresetTemplateJson* templateJson = &(all_data->templateJson);
+
+    templateJson->has_Box = true;
+    strncpy(templateJson->Box, "Box_Blue.png", strlen("Box_Blue.png"));
+    templateJson->has_Control = true;
+    strncpy(templateJson->Control, "Control_5Knob.png", strlen("Control_5Knob.png"));
+    templateJson->has_Texture = true;
+    strncpy(templateJson->Texture, "", strlen(""));
+    templateJson->has_fontFamily = true;
+    strncpy(templateJson->fontFamily, "CircularStd-Black", strlen("CircularStd-Black"));
+    templateJson->has_panelStyle = true;
+    strncpy(templateJson->panelStyle, "HorizontalTypeHagibis", strlen("HorizontalTypeHagibis"));
+    templateJson->has_showsKnobs = true;
+    templateJson->showsKnobs = 5;
+    templateJson->has_templateId = true;
+    strncpy(templateJson->templateId, "", strlen(""));
+
+    templateJson->has_elements = true;
+    templateJson->elements.items_count = 6;
+    for (int i = 0; i < templateJson->elements.items_count; i++)
+    {
+        presets_CPresetTemplateJson_CElements_CItem* item = &(templateJson->elements.items[i]);
+        item->has_paramID = true;
+        strncpy(item->paramID, "10", strlen("10"));
+        item->has_position = true;
+        strncpy(item->position, "803,170,173,173", strlen("803,170,173,173"));
+        item->has_res = true;
+        strncpy(item->res, "LiveKnob03White", strlen("LiveKnob03White"));
+        item->has_type = true;
+        strncpy(item->type, "knob", strlen("knob"));
+
+        item->indexID_count = 4;
+        for (int j = 0; j < item->indexID_count; j++)
+        {
+            strncpy(&(item->indexID[j][0]), "bias.pingpongDelay", strlen("bias.pingpongDelay"));
+        }
+    }
     // ===========================
 }
 
