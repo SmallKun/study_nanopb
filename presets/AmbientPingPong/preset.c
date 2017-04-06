@@ -61,64 +61,105 @@ void hexDump(char *desc, void *addr, int len)
 
 void PrintPreset(const presets_CPresetAllData* all_data)
 {
+    // ======== data.json ========
     printf("all_data->has_dataJson:%d\n", all_data->has_dataJson);
-
-    const presets_CPresetDataJson* dataJson = &(all_data->dataJson);
-
-    printf("has_panelStyle:%d\n", dataJson->has_panelStyle);
-    printf("panelStyle:\"%s\"\n", dataJson->panelStyle);
-    printf("has_sigPath:%d\n", dataJson->has_sigPath);
-    printf("\t dataJson->sigPath.has_metronome:%d\n", dataJson->sigPath.has_metronome);
-    printf("\t dataJson->sigPath.metronome.has_bpm:%d\n", dataJson->sigPath.metronome.has_bpm);
-    printf("\t dataJson->sigPath.metronome.bpm:%u\n", dataJson->sigPath.metronome.bpm);
-    printf("\t dataJson->sigPath.metronome.has_isActive:%d\n", dataJson->sigPath.metronome.has_isActive);
-    printf("\t dataJson->sigPath.metronome.isActive:%d\n", dataJson->sigPath.metronome.isActive);
-
-    printf("\t dataJson->sigPath.has_noisegate:%d\n", dataJson->sigPath.has_noisegate);
-    printf("\t dataJson->sigPath.noisegate.has_id:%d\n", dataJson->sigPath.noisegate.has_id);
-    printf("\t dataJson->sigPath.noisegate.id:\"%s\"\n", dataJson->sigPath.noisegate.id);
-    printf("\t dataJson->sigPath.noisegate.has_isActive:%d\n", dataJson->sigPath.noisegate.has_isActive);
-    printf("\t dataJson->sigPath.noisegate.isActive:%d\n", dataJson->sigPath.noisegate.isActive);
-    printf("\t dataJson->sigPath.noisegate.has_name:%d\n", dataJson->sigPath.noisegate.has_name);
-    printf("\t dataJson->sigPath.noisegate.name:\"%s\"\n", dataJson->sigPath.noisegate.name);
-    printf("\t dataJson->sigPath.noisegate.has_selected:%d\n", dataJson->sigPath.noisegate.has_selected);
-    printf("\t dataJson->sigPath.noisegate.selected:\"%s\"\n", dataJson->sigPath.noisegate.selected);
-    for (int i = 0; i < dataJson->sigPath.noisegate.params_count; i++)
+    if (all_data->has_dataJson)
     {
-        const presets_CParam* param = &dataJson->sigPath.noisegate.params[i];
-        printf("\t\t param->has_id:%d\n", param->has_id);
-        printf("\t\t param->id:%d\n", param->id);
-        printf("\t\t param->has_value:%d\n", param->has_value);
-        printf("\t\t param->value:%f\n", param->value);
-    }
+        const presets_CPresetDataJson* dataJson = &(all_data->dataJson);
 
-    printf("\t dataJson->sigPath.has_blocks:%d\n", dataJson->sigPath.has_blocks);
-    printf("\t dataJson->sigPath.blocks.items_count:%d\n", dataJson->sigPath.blocks.items_count);
-    for (int i = 0; i < dataJson->sigPath.blocks.items_count; i++)
-    {
-        const presets_CSigPath_CBlocks_CItem* item = &dataJson->sigPath.blocks.items[i];
-        printf("\t item[%d]\n", i);
-        printf("\t item->has_id:%d\n", item->has_id);
-        printf("\t item->id:\"%s\"\n", item->id);
-        printf("\t item->has_isActive:%d\n", item->has_isActive);
-        printf("\t item->isActive:%d\n", item->isActive);
-        printf("\t item->has_name:%d\n", item->has_name);
-        printf("\t item->name:\"%s\"\n", item->name);
-        printf("\t item->has_selected:%d\n", item->has_selected);
-        printf("\t item->selected:\"%s\"\n", item->selected);
-        for (int i = 0; i < item->params_count; i++)
+        if (dataJson->has_panelStyle)
+            printf("panelStyle:\"%s\"\n", dataJson->panelStyle);
+        if (dataJson->has_sigPath)
         {
-            const presets_CParam* param = &(item->params[i]);
-            printf("\t\t param->has_id:%d\n", param->has_id);
-            printf("\t\t param->id:%d\n", param->id);
-            printf("\t\t param->has_value:%d\n", param->has_value);
-            printf("\t\t param->value:%f\n", param->value);
+            printf("\t dataJson->sigPath.has_metronome:%d\n", dataJson->sigPath.has_metronome);
+            if (dataJson->sigPath.has_metronome)
+            {
+                if (dataJson->sigPath.metronome.has_bpm)
+                    printf("\t dataJson->sigPath.metronome.bpm:%u\n", dataJson->sigPath.metronome.bpm);
+                if (dataJson->sigPath.metronome.has_isActive)
+                    printf("\t dataJson->sigPath.metronome.isActive:%d\n", dataJson->sigPath.metronome.isActive);
+            }
+
+            printf("\t dataJson->sigPath.has_noisegate:%d\n", dataJson->sigPath.has_noisegate);
+            if (dataJson->sigPath.has_noisegate)
+            {
+                if (dataJson->sigPath.noisegate.has_id)
+                    printf("\t dataJson->sigPath.noisegate.id:\"%s\"\n", dataJson->sigPath.noisegate.id);
+                if (dataJson->sigPath.noisegate.has_isActive)
+                    printf("\t dataJson->sigPath.noisegate.isActive:%d\n", dataJson->sigPath.noisegate.isActive);
+                if (dataJson->sigPath.noisegate.has_name)
+                    printf("\t dataJson->sigPath.noisegate.name:\"%s\"\n", dataJson->sigPath.noisegate.name);
+                if (dataJson->sigPath.noisegate.has_selected)
+                    printf("\t dataJson->sigPath.noisegate.selected:\"%s\"\n", dataJson->sigPath.noisegate.selected);
+                for (int i = 0; i < dataJson->sigPath.noisegate.params_count; i++)
+                {
+                    const presets_CParam* param = &dataJson->sigPath.noisegate.params[i];
+                    if (param->has_id)
+                        printf("\t\t param->id:%d\n", param->id);
+                    if (param->has_value)
+                        printf("\t\t param->value:%f\n", param->value);
+                }
+            }
+
+            printf("\t dataJson->sigPath.has_blocks:%d\n", dataJson->sigPath.has_blocks);
+            if (dataJson->sigPath.has_blocks)
+            {
+                for (int i = 0; i < dataJson->sigPath.blocks.items_count; i++)
+                {
+                    const presets_CSigPath_CBlocks_CItem* item = &dataJson->sigPath.blocks.items[i];
+                    printf("\t item[%d]\n", i);
+                    if (item->has_id)
+                        printf("\t item->id:\"%s\"\n", item->id);
+                    if (item->has_isActive)
+                        printf("\t item->isActive:%d\n", item->isActive);
+                    if (item->has_name)
+                        printf("\t item->name:\"%s\"\n", item->name);
+                    if (item->has_selected)
+                        printf("\t item->selected:\"%s\"\n", item->selected);
+                    for (int i = 0; i < item->params_count; i++)
+                    {
+                        const presets_CParam* param = &(item->params[i]);
+                        if (param->has_id)
+                            printf("\t\t param->id:%d\n", param->id);
+                        if (param->has_value)
+                            printf("\t\t param->value:%f\n", param->value);
+                    }
+                }
+            }
         }
     }
+    // ===========================
+
+    // ======== meta.json ========
+    printf("all_data->has_metaJson:%d\n", all_data->has_metaJson);
+    if (all_data->has_metaJson)
+    {
+        const presets_CPresetMetaJson* metaJson = &(all_data->metaJson);
+
+        if (metaJson->has_category)
+            printf("category:\"%s\"\n", metaJson->category);
+        if (metaJson->has_description)
+            printf("description:\"%s\"\n", metaJson->description);
+        if (metaJson->has_displayName)
+            printf("displayName:\"%s\"\n", metaJson->displayName);
+        if (metaJson->has_id)
+            printf("id:\"%s\"\n", metaJson->id);
+        if (metaJson->has_version)
+            printf("version:\"%s\"\n", metaJson->version);
+        for (int i = 0; i < metaJson->features_count; i++)
+        {
+            printf("\t metaJson->features[%d]:%d\n", i, metaJson->features[i]);
+        }
+    }
+    // ===========================
+
+    // ======== template.json ========
+    // ===========================
 }
 
 void PreparePresetContent(presets_CPresetAllData* all_data)
 {
+    // ======== data.json ========
     all_data->has_dataJson = true;
 
     presets_CPresetDataJson* dataJson = &(all_data->dataJson);
@@ -178,6 +219,33 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
             param->value = 0.0020000000949949026;
         }
     }
+    // ===========================
+
+    // ======== meta.json ========
+    all_data->has_metaJson = true;
+
+    presets_CPresetMetaJson* metaJson = &(all_data->metaJson);
+    metaJson->has_category = true;
+    strncpy(metaJson->category, "", strlen(""));
+    metaJson->has_description = true;
+    strncpy(metaJson->description, "description for Ambient Ping Pong", strlen("description for Ambient Ping Pong"));
+    metaJson->has_displayName = true;
+    strncpy(metaJson->displayName, "Ambient Ping Pong", strlen("Ambient Ping Pong"));
+    metaJson->has_id = true;
+    strncpy(metaJson->id, "D3F95035-B1A9-C1DE-A6D3-54E421E8567C", strlen("D3F95035-B1A9-C1DE-A6D3-54E421E8567C"));
+    metaJson->has_version = true;
+    strncpy(metaJson->version, "1.5", strlen("1.5"));
+
+    metaJson->features_count = 3;
+    for (int i = 0; i < metaJson->features_count; i++)
+    {
+        metaJson->features[i] = 31;
+    }
+    // ===========================
+
+    // ======== template.json ========
+    all_data->has_templateJson = false;
+    // ===========================
 }
 
 int main()

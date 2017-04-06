@@ -93,7 +93,7 @@ message CPresetAllData {
 
     // Just include all data/meta/template json contents
     optional CPresetDataJson dataJson = 1;
-    /* optional CPresetMetaJson metaJson = 2; */
-    /* optional CPresetTemplateJson templateJson = 3; */
+    optional CPresetMetaJson metaJson = 2;
+    optional CPresetTemplateJson templateJson = 3;
 }
 // [END messages]

@@ -9,7 +9,8 @@
 # On the other hand, using the callback interface, it is not necessary
 # to set a limit on the number of files in the response.
 
-presets.CPresetDataJson.panelStyle   max_size:64
+# ======== data.json ========
+presets.CPresetDataJson.panelStyle          max_size:64
 
 presets.CSigPath.CNoisegate.id              max_size:64
 presets.CSigPath.CNoisegate.name            max_size:64
@@ -22,4 +23,30 @@ presets.CSigPath.CBlocks.CItem.id           max_size:64
 presets.CSigPath.CBlocks.CItem.name         max_size:64
 presets.CSigPath.CBlocks.CItem.selected     max_size:64
 presets.CSigPath.CBlocks.CItem.params       max_count:50
+# ===========================
+
+# ======== meta.json ========
+presets.CPresetMetaJson.category            max_size:64
+presets.CPresetMetaJson.description         max_size:64
+presets.CPresetMetaJson.displayName         max_size:64
+presets.CPresetMetaJson.features             max_count:50
+presets.CPresetMetaJson.id                  max_size:64
+presets.CPresetMetaJson.version             max_size:64
+# ===========================
+
+# ======== template.json ========
+presets.CPresetTemplateJson.Box             max_size:64
+presets.CPresetTemplateJson.Control         max_size:64
+presets.CPresetTemplateJson.Texture         max_size:64
+presets.CPresetTemplateJson.fontFamily      max_size:64
+presets.CPresetTemplateJson.panelStyle      max_size:64
+presets.CPresetTemplateJson.templateId      max_size:64
+
+presets.CPresetTemplateJson.CElements.items             max_count:50
+presets.CPresetTemplateJson.CElements.CItem.indexID     max_size:64 max_count:50
+presets.CPresetTemplateJson.CElements.CItem.paramID     max_size:64
+presets.CPresetTemplateJson.CElements.CItem.position    max_size:64
+presets.CPresetTemplateJson.CElements.CItem.res         max_size:64
+presets.CPresetTemplateJson.CElements.CItem.type        max_size:64
+# ===========================
 
