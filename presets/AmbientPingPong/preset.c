@@ -278,10 +278,9 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     strncpy(metaJson->version, "1.5", strlen("1.5"));
 
     metaJson->features_count = 3;
-    for (int i = 0; i < metaJson->features_count; i++)
-    {
-        metaJson->features[i] = 31;
-    }
+    metaJson->features[0] = 0;
+    metaJson->features[1] = 15;
+    metaJson->features[2] = 31;
     // ===========================
 
     // ======== template.json ========
