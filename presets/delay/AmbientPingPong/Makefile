@@ -1,5 +1,5 @@
 
-NANOPB_DIR=../../core
+NANOPB_DIR=../../../core
 ifdef WINDOWS
 	PROTOC_OPTS = --plugin=protoc-gen-nanopb=$(NANOPB_DIR)/generator/protoc-gen-nanopb.bat
 else
