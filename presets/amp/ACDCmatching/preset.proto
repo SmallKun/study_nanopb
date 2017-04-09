@@ -1,0 +1,87 @@
+/*
+Name: AC DC matching
+ID: B6C43C9D-6A96-9A0D-35A2-9F46E77D34A3
+original size : [6000] bytes
+ */
+
+// [START declaration]
+syntax = "proto2";
+package presets;
+// [END declaration]
+
+// [START messages]
+// ======== data.json ========
+message CParam {
+    optional int32 id = 1;
+    repeated float value = 2;
+}
+
+message CSigPath {
+    message CBlocks {
+        message CItem {
+            optional string id = 1;
+            optional bool isActive = 2;
+            optional string name = 3;
+            repeated CParam params = 4;
+            optional string selected = 5;
+            optional int32 wavBitDepth = 6;
+            optional string wavFileName = 7;
+            optional int32 wavSampleRate = 8;
+            optional bool IsAudioRouting = 9;
+        }
+
+        repeated CItem items = 1;
+    }
+
+    optional CBlocks blocks = 1;
+}
+
+message CPresetDataJson {
+    optional CSigPath sigPath = 1;
+}
+// ===========================
+
+// ======== meta.json ========
+message CPresetMetaJson {
+    optional string category = 1;
+    optional string description = 2;
+    optional string displayName = 3;
+    repeated int32 features = 4;
+    optional string id = 5;
+    optional string version = 6;
+}
+// ===========================
+
+// ======== template.json ========
+message CPresetTemplateJson {
+    message CElements {
+        message CItem {
+            repeated string indexID = 1;
+            optional string paramID = 2;
+            optional string position = 3;
+            optional string res = 4;
+            optional string type = 5;
+        }
+
+        repeated CItem items = 1;
+    }
+
+    optional string brand = 1;
+    optional string case_material = 2;
+    optional string corner = 3;
+    optional string cover = 4;
+    optional CElements elements = 5;
+    optional string handler = 6;
+    optional string panel = 7;
+    optional string templateId = 8;
+}
+// ===========================
+
+message CPresetAllData {
+
+    // Just include all data/meta/template json contents
+    optional CPresetDataJson dataJson = 1;
+    optional CPresetMetaJson metaJson = 2;
+    optional CPresetTemplateJson templateJson = 3;
+}
+// [END messages]

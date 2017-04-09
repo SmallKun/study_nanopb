@@ -1,0 +1,48 @@
+# This file defines the nanopb-specific options for the messages defined
+# in preset.proto.
+#
+# If you come from high-level programming background, the hardcoded
+# maximum lengths may disgust you. However, if your microcontroller only
+# has a few kB of ram to begin with, setting reasonable limits for
+# filenames is ok.
+#
+# On the other hand, using the callback interface, it is not necessary
+# to set a limit on the number of files in the response.
+
+# ======== data.json ========
+presets.CParam.value                        max_count:3072 # 2048 + 1024 = 3072
+
+presets.CSigPath.CBlocks.items              max_count:50
+presets.CSigPath.CBlocks.CItem.id           max_size:64
+presets.CSigPath.CBlocks.CItem.name         max_size:64
+presets.CSigPath.CBlocks.CItem.selected     max_size:64
+presets.CSigPath.CBlocks.CItem.wavFileName  max_size:64
+presets.CSigPath.CBlocks.CItem.params       max_count:50
+# ===========================
+
+# ======== meta.json ========
+presets.CPresetMetaJson.category            max_size:64
+presets.CPresetMetaJson.description         max_size:64
+presets.CPresetMetaJson.displayName         max_size:64
+presets.CPresetMetaJson.features            max_count:50
+presets.CPresetMetaJson.id                  max_size:64
+presets.CPresetMetaJson.version             max_size:64
+# ===========================
+
+# ======== template.json ========
+presets.CPresetTemplateJson.brand           max_size:64
+presets.CPresetTemplateJson.case_material   max_size:64
+presets.CPresetTemplateJson.corner          max_size:64
+presets.CPresetTemplateJson.cover           max_size:64
+presets.CPresetTemplateJson.handler         max_size:64
+presets.CPresetTemplateJson.panel           max_size:64
+presets.CPresetTemplateJson.templateId      max_size:64
+
+presets.CPresetTemplateJson.CElements.items             max_count:50
+presets.CPresetTemplateJson.CElements.CItem.indexID     max_size:64 max_count:50
+presets.CPresetTemplateJson.CElements.CItem.paramID     max_size:64
+presets.CPresetTemplateJson.CElements.CItem.position    max_size:64
+presets.CPresetTemplateJson.CElements.CItem.res         max_size:64
+presets.CPresetTemplateJson.CElements.CItem.type        max_size:64
+# ===========================
+

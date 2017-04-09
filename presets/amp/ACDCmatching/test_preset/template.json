@@ -1,0 +1,55 @@
+{
+   "brand" : "Plexiglas",
+   "case_material" : "case_material_Plexiglas.png",
+   "corner" : "corner_5153.png",
+   "cover" : "cover_Plexiglas.png",
+   "elements" : {
+      "items" : [
+         {
+            "indexID" : "bias.glassypreamp",
+            "paramID" : "4",
+            "position" : "52,170,173,173",
+            "res" : "MarshallGolden",
+            "type" : "knob"
+         },
+         {
+            "indexID" : "bias.tonestack",
+            "paramID" : "1",
+            "position" : "202,170,173,173",
+            "res" : "MarshallGolden",
+            "type" : "knob"
+         },
+         {
+            "indexID" : "bias.tonestack",
+            "paramID" : "2",
+            "position" : "353,170,173,173",
+            "res" : "MarshallGolden",
+            "type" : "knob"
+         },
+         {
+            "indexID" : "bias.tonestack",
+            "paramID" : "3",
+            "position" : "503,170,173,173",
+            "res" : "MarshallGolden",
+            "type" : "knob"
+         },
+         {
+            "indexID" : "bias.poweramp",
+            "paramID" : "13",
+            "position" : "654,170,173,173",
+            "res" : "MarshallGolden",
+            "type" : "knob"
+         },
+         {
+            "indexID" : "bias.poweramp",
+            "paramID" : "2",
+            "position" : "803,170,173,173",
+            "res" : "MarshallGolden",
+            "type" : "knob"
+         }
+      ]
+   },
+   "handler" : "handler_5153.png",
+   "panel" : "panel_Plexiglas.png",
+   "templateId" : ""
+}
