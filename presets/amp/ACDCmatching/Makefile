@@ -12,8 +12,7 @@ DST_DIR="$(PWD)"
 OUT=preset.out
 
 # CFLAGS = -Wall -Werror -DPB_FIELD_16BIT -g -O0 # PB_FIELD_16BIT : see https://jpa.kapsi.fi/nanopb/docs/reference.html#compilation-options
-# CFLAGS = -Wall -Werror -DPB_FIELD_32BIT -g -O0 # PB_FIELD_32BIT : see https://jpa.kapsi.fi/nanopb/docs/reference.html#compilation-options
-CFLAGS = -Wall -DPB_FIELD_32BIT -g -O0 # PB_FIELD_32BIT : see https://jpa.kapsi.fi/nanopb/docs/reference.html#compilation-options
+CFLAGS = -Wall -Werror -DPB_FIELD_32BIT -g -O0 # PB_FIELD_32BIT : see https://jpa.kapsi.fi/nanopb/docs/reference.html#compilation-options
 CFLAGS += -I$(NANOPB_DIR)
 
 # C source code files that are required

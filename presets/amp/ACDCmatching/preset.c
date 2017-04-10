@@ -65,48 +65,16 @@ void hexDump(char *desc, void *addr, int len)
 
 void PrintPreset(const presets_CPresetAllData* all_data)
 {
-    printf("PrintPreset\n");
-#if 0
+    printf("%s\n", __FUNCTION__);
+
     // ======== data.json ========
     printf("all_data->has_dataJson:%d\n", all_data->has_dataJson);
     if (all_data->has_dataJson)
     {
         const presets_CPresetDataJson* dataJson = &(all_data->dataJson);
 
-        if (dataJson->has_panelStyle)
-            printf("panelStyle:\"%s\"\n", dataJson->panelStyle);
         if (dataJson->has_sigPath)
         {
-            printf("\t dataJson->sigPath.has_metronome:%d\n", dataJson->sigPath.has_metronome);
-            if (dataJson->sigPath.has_metronome)
-            {
-                if (dataJson->sigPath.metronome.has_bpm)
-                    printf("\t dataJson->sigPath.metronome.bpm:%u\n", dataJson->sigPath.metronome.bpm);
-                if (dataJson->sigPath.metronome.has_isActive)
-                    printf("\t dataJson->sigPath.metronome.isActive:%d\n", dataJson->sigPath.metronome.isActive);
-            }
-
-            printf("\t dataJson->sigPath.has_noisegate:%d\n", dataJson->sigPath.has_noisegate);
-            if (dataJson->sigPath.has_noisegate)
-            {
-                if (dataJson->sigPath.noisegate.has_id)
-                    printf("\t dataJson->sigPath.noisegate.id:\"%s\"\n", dataJson->sigPath.noisegate.id);
-                if (dataJson->sigPath.noisegate.has_isActive)
-                    printf("\t dataJson->sigPath.noisegate.isActive:%d\n", dataJson->sigPath.noisegate.isActive);
-                if (dataJson->sigPath.noisegate.has_name)
-                    printf("\t dataJson->sigPath.noisegate.name:\"%s\"\n", dataJson->sigPath.noisegate.name);
-                if (dataJson->sigPath.noisegate.has_selected)
-                    printf("\t dataJson->sigPath.noisegate.selected:\"%s\"\n", dataJson->sigPath.noisegate.selected);
-                for (int i = 0; i < dataJson->sigPath.noisegate.params_count; i++)
-                {
-                    const presets_CParam* param = &dataJson->sigPath.noisegate.params[i];
-                    if (param->has_id)
-                        printf("\t\t param->id:%d\n", param->id);
-                    if (param->has_value)
-                        printf("\t\t param->value:%f\n", param->value);
-                }
-            }
-
             printf("\t dataJson->sigPath.has_blocks:%d\n", dataJson->sigPath.has_blocks);
             if (dataJson->sigPath.has_blocks)
             {
@@ -122,13 +90,23 @@ void PrintPreset(const presets_CPresetAllData* all_data)
                         printf("\t item->name:\"%s\"\n", item->name);
                     if (item->has_selected)
                         printf("\t item->selected:\"%s\"\n", item->selected);
-                    for (int i = 0; i < item->params_count; i++)
+                    if (item->has_wavBitDepth)
+                        printf("\t item->wavBitDepth:%d\n", item->wavBitDepth);
+                    if (item->has_wavFileName)
+                        printf("\t item->wavFileName:\"%s\"\n", item->wavFileName);
+                    if (item->has_wavSampleRate)
+                        printf("\t item->wavSampleRate:%d\n", item->wavSampleRate);
+                    if (item->has_IsAudioRouting)
+                        printf("\t item->IsAudioRouting:%d\n", item->IsAudioRouting);
+                    for (int j = 0; j < item->params_count; j++)
                     {
-                        const presets_CParam* param = &(item->params[i]);
+                        const presets_CParam* param = &(item->params[j]);
                         if (param->has_id)
                             printf("\t\t param->id:%d\n", param->id);
-                        if (param->has_value)
-                            printf("\t\t param->value:%f\n", param->value);
+                        for (int k = 0; k < param->value_count; k++)
+                        {
+                            printf("\t\t\t value[%d]:%f\n", k, param->value[k]);
+                        }
                     }
                 }
             }
@@ -164,18 +142,18 @@ void PrintPreset(const presets_CPresetAllData* all_data)
     if (all_data->has_templateJson)
     {
         const presets_CPresetTemplateJson* templateJson = &(all_data->templateJson);
-        if (templateJson->has_Box)
-            printf("Box:\"%s\"\n", templateJson->Box);
-        if (templateJson->has_Control)
-            printf("Control:\"%s\"\n", templateJson->Control);
-        if (templateJson->has_Texture)
-            printf("Texture:\"%s\"\n", templateJson->Texture);
-        if (templateJson->has_fontFamily)
-            printf("fontFamily:\"%s\"\n", templateJson->fontFamily);
-        if (templateJson->has_panelStyle)
-            printf("panelStyle:\"%s\"\n", templateJson->panelStyle);
-        if (templateJson->has_showsKnobs)
-            printf("showsKnobs:%d\n", templateJson->showsKnobs);
+        if (templateJson->has_brand)
+            printf("brand:\"%s\"\n", templateJson->brand);
+        if (templateJson->has_case_material)
+            printf("case_material:\"%s\"\n", templateJson->case_material);
+        if (templateJson->has_corner)
+            printf("corner:\"%s\"\n", templateJson->corner);
+        if (templateJson->has_cover)
+            printf("cover:\"%s\"\n", templateJson->cover);
+        if (templateJson->has_handler)
+            printf("handler:\"%s\"\n", templateJson->handler);
+        if (templateJson->has_panel)
+            printf("panel:\"%s\"\n", templateJson->panel);
         if (templateJson->has_templateId)
             printf("templateId:\"%s\"\n", templateJson->templateId);
         if (templateJson->has_elements)
@@ -202,7 +180,6 @@ void PrintPreset(const presets_CPresetAllData* all_data)
         }
     }
     // ===========================
-#endif
 }
 
 void PreparePresetContent(presets_CPresetAllData* all_data)
@@ -227,11 +204,11 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
         item->has_selected = true;
         strncpy(item->selected, "false", strlen("false"));
         item->params_count = 34;
-        for (int i = 0; i < item->params_count; i++)
+        for (int j = 0; j < item->params_count; j++)
         {
-            presets_CParam* param = &item->params[i];
+            presets_CParam* param = &item->params[j];
             param->has_id = true;
-            param->id = i;
+            param->id = j;
             param->value_count = 1;
             param->value[0] = 0.0020000000949949026;
         }
@@ -242,7 +219,7 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     irLoader_item->has_wavBitDepth = true;
     irLoader_item->wavBitDepth = 24;
     irLoader_item->has_wavFileName = true;
-    strncpy(irLoader_item->wavFileName, "bias.toneMatching", strlen("bias.toneMatching"));
+    strncpy(irLoader_item->wavFileName, "55661234455590345", strlen("55661234455590345"));
     irLoader_item->has_wavSampleRate = true;
     irLoader_item->wavSampleRate = 44100;
     // "bias.IRLoader"'s params id 8 have 2048 values, so add additional 2047 params
