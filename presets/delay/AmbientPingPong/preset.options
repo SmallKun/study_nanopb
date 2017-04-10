@@ -29,7 +29,7 @@ presets.CSigPath.CBlocks.CItem.params       max_count:50
 presets.CPresetMetaJson.category            max_size:64
 presets.CPresetMetaJson.description         max_size:64
 presets.CPresetMetaJson.displayName         max_size:64
-presets.CPresetMetaJson.features             max_count:50
+presets.CPresetMetaJson.features            max_count:50
 presets.CPresetMetaJson.id                  max_size:64
 presets.CPresetMetaJson.version             max_size:64
 # ===========================

@@ -3,8 +3,12 @@
 #include <pb_decode.h>
 #include "preset.pb.h"
 
-static uint8_t buffer_encode[30720]; // 30KB buffer
-static uint8_t buffer_decode[30720]; // 30KB buffer
+/* #define MAX_FLOAT_ARRAY_SIZE (2048) */
+/* #define MAX_FLOAT_ARRAY_SIZE (512) */
+#define MAX_FLOAT_ARRAY_SIZE (128)
+
+static uint8_t buffer_encode[10*1024]; // 10KB buffer
+static uint8_t buffer_decode[10*1024]; // 10KB buffer
 
 void hexDump(char *desc, void *addr, int len)
 {
@@ -204,9 +208,6 @@ void PrintPreset(const presets_CPresetAllData* all_data)
 void PreparePresetContent(presets_CPresetAllData* all_data)
 {
     // ======== data.json ========
-#if 1
-    all_data->has_dataJson = false;
-#else
     all_data->has_dataJson = true;
     presets_CPresetDataJson* dataJson = &(all_data->dataJson);
 
@@ -245,9 +246,10 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     irLoader_item->has_wavSampleRate = true;
     irLoader_item->wavSampleRate = 44100;
     // "bias.IRLoader"'s params id 8 have 2048 values, so add additional 2047 params
+    // Note : Since FW limitation, we only need the first 512 float been encoded into binary
     presets_CParam* irLoader_param_8 = &irLoader_item->params[8];
-    irLoader_param_8->value_count = 2048;
-    for (int i = 0; i < 2047; i++)
+    irLoader_param_8->value_count = MAX_FLOAT_ARRAY_SIZE;
+    for (int i = 0; i < (MAX_FLOAT_ARRAY_SIZE-1); i++)
     {
         irLoader_param_8->value[i] = -1.6570091247558594e-05;
     }
@@ -257,19 +259,16 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     toneMatch_item->has_IsAudioRouting = true;
     toneMatch_item->IsAudioRouting = false;
     // "bias.toneMatching"'s params id 0 have 2048 values, so add additional 2047 params
+    // Note : Since FW limitation, we only need the first 512 float been encoded into binary
     presets_CParam* toneMatch_param_0 = &toneMatch_item->params[0];
-    toneMatch_param_0->value_count = 2048;
-    for (int i = 0; i < 2047; i++)
+    toneMatch_param_0->value_count = MAX_FLOAT_ARRAY_SIZE;
+    for (int i = 0; i < (MAX_FLOAT_ARRAY_SIZE-1); i++)
     {
         toneMatch_param_0->value[i] = 7.163822010625154e-05;
     }
-#endif
     // ===========================
 
     // ======== meta.json ========
-#if 1
-    all_data->has_metaJson = false;
-#else
     all_data->has_metaJson = true;
 
     presets_CPresetMetaJson* metaJson = &(all_data->metaJson);
@@ -283,13 +282,9 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     strncpy(metaJson->id, "B6C43C9D-6A96-9A0D-35A2-9F46E77D34A3", strlen("B6C43C9D-6A96-9A0D-35A2-9F46E77D34A3"));
     metaJson->has_version = true;
     strncpy(metaJson->version, "1.4", strlen("1.4"));
-#endif
     // ===========================
 
     // ======== template.json ========
-#if 1
-    all_data->has_templateJson = false;
-#else
     all_data->has_templateJson = true;
 
     presets_CPresetTemplateJson* templateJson = &(all_data->templateJson);
@@ -329,7 +324,6 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
             strncpy(&(item->indexID[j][0]), "bias.glassypreamp", strlen("bias.glassypreamp"));
         }
     }
-#endif
     // ===========================
 }
 
@@ -339,11 +333,6 @@ int main()
     size_t message_length;
     bool status;
 
-    message_length = 0;
-    status = false;
-    memset(buffer_decode, 0, sizeof(buffer_decode));
-    memset(buffer_encode, 0, sizeof(buffer_encode));
-#if 1
     /* Encode our message */
     {
         /* Create a stream that will write to our buffer. */
@@ -357,13 +346,7 @@ int main()
          * It is a good idea to always initialize your structures
          * so that you do not have garbage data from RAM in there.
          */
-    #if 1
-        #if 1
         presets_CPresetAllData encode_msg = presets_CPresetAllData_init_zero;
-        /* presets_CPresetAllData encode_msg = presets_CPresetAllData_init_default; */
-        /* presets_CPresetAllData encode_msg; */
-
-        #else
         /* Fill in the message */
         PreparePresetContent(&encode_msg);
 
@@ -382,16 +365,12 @@ int main()
 
         // print buffer_encode[] content
         hexDump("buffer_encode[]", buffer_encode, message_length);
-        #endif
-    #endif
     }
-#endif
 
     /* Now we could transmit the encode_msg over network, store it in a file or
      * wrap it to a pigeon's leg.
      */
 
-#if 0
     /* But because we are lazy, we will just decode it immediately. */
     {
         /* Allocate space for the message. */
@@ -415,7 +394,6 @@ int main()
         /* Print the data contained in the decode_msg. */
         PrintPreset(&decode_msg);
     }
-#endif
 
     return 0;
 }

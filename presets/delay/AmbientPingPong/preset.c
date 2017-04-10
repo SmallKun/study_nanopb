@@ -3,8 +3,8 @@
 #include <pb_decode.h>
 #include "preset.pb.h"
 
-static uint8_t buffer_encode[2048];
-static uint8_t buffer_decode[2048];
+static uint8_t buffer_encode[2048]; // 2KB buffer
+static uint8_t buffer_decode[2048]; // 2KB buffer
 
 void hexDump(char *desc, void *addr, int len)
 {

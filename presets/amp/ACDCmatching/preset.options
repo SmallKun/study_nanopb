@@ -10,7 +10,9 @@
 # to set a limit on the number of files in the response.
 
 # ======== data.json ========
-presets.CParam.value                        max_count:3072 # 2048 + 1024 = 3072
+presets.CParam.value                        max_count:128   # can run
+# presets.CParam.value                        max_count:512  # will crash
+# presets.CParam.value                        max_count:2048 # will crash
 
 presets.CSigPath.CBlocks.items              max_count:50
 presets.CSigPath.CBlocks.CItem.id           max_size:64
