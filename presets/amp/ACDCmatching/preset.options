@@ -10,7 +10,8 @@
 # to set a limit on the number of files in the response.
 
 # ======== data.json ========
-presets.CParam.value                        max_count:128   # can run
+# Disable 'presets.CParam.value' setting below will change it to pb_callback_t
+# presets.CParam.value                        max_count:128   # can run
 # presets.CParam.value                        max_count:512  # will crash
 # presets.CParam.value                        max_count:2048 # will crash
 
