@@ -17,6 +17,7 @@ CFLAGS += -I$(NANOPB_DIR)
 
 # C source code files that are required
 CSRC  = preset.c                   # The main program
+CSRC += callbacks.c                # The main program
 CSRC += preset.pb.c                # The compiled protocol definition
 CSRC += $(NANOPB_DIR)/pb_encode.c  # The nanopb encoder
 CSRC += $(NANOPB_DIR)/pb_decode.c  # The nanopb decoder

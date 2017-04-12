@@ -2,6 +2,7 @@
 #include <pb_encode.h>
 #include <pb_decode.h>
 #include "preset.pb.h"
+#include "callbacks.h"
 
 // ********************************** IMPORTANT **********************************
 // We found nanopb can't have too large float array inside *.pb.h, application
@@ -19,6 +20,47 @@
 #define ENCODE_DECODE_BUFFER_SIZE (30 * 1024) // 30 KB buffer
 static uint8_t buffer_encode[ENCODE_DECODE_BUFFER_SIZE];
 static uint8_t buffer_decode[ENCODE_DECODE_BUFFER_SIZE];
+
+#if 0 // float values generator
+static const float firstFloat = 0.0020000000949949026;
+static const float floatDiff = 0.001;
+static float next_float_val(bool reset)
+{
+    static float next = firstFloat;
+    if (reset)
+    {
+        next = firstFloat;
+        return next;
+    }
+
+    next += floatDiff;
+
+    return next;
+}
+
+static bool gen_float_val(float* ret)
+{
+    static uint32_t idx = 0;
+    float next = 0;
+
+    if (idx == 4096)
+    {
+        idx = 0;
+        next = next_float_val(true);
+        *ret = next;
+
+        return false;
+    }
+    else
+    {
+        idx++;
+        next = next_float_val(false);
+        *ret = next;
+
+        return true;
+    }
+}
+#endif // float values generator
 
 void hexDump(char *desc, void *addr, int len)
 {
@@ -196,237 +238,6 @@ void PrintPreset(const presets_CPresetAllData* all_data)
         }
     }
     // ===========================
-}
-
-#if 0 // float values generator
-static const float firstFloat = 0.0020000000949949026;
-static const float floatDiff = 0.001;
-static float next_float_val(bool reset)
-{
-    static float next = firstFloat;
-    if (reset)
-    {
-        next = firstFloat;
-        return next;
-    }
-
-    next += floatDiff;
-
-    return next;
-}
-
-static bool gen_float_val(float* ret)
-{
-    static uint32_t idx = 0;
-    float next = 0;
-
-    if (idx == 4096)
-    {
-        idx = 0;
-        next = next_float_val(true);
-        *ret = next;
-
-        return false;
-    }
-    else
-    {
-        idx++;
-        next = next_float_val(false);
-        *ret = next;
-
-        return true;
-    }
-}
-#endif // float values generator
-
-// args struct for pb_callback_t
-typedef struct _cb_arg_add_float_t
-{
-    int32_t total;
-    float default_val;
-    bool (*cb_get_val)(float*);
-} cb_arg_add_float_t;
-/* static cb_arg_add_float_t cb_arg_type_1 = {1, 0.001, gen_float_val}; */
-/* static cb_arg_add_float_t cb_arg_type_512 = {512, 0.005, gen_float_val}; */
-/* static cb_arg_add_float_t cb_arg_type_2048 = {2048, 7.025, gen_float_val}; */
-static float cb_arg_next_float_val = 0.33333;
-
-/* Callback function for pb_callback_t
- * This callback function will be called once for each float value while
- * decoding. The float value will be printed out immediately, so that
- * no memory has to be allocated for them.
- */
-bool cb_decode_one_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
-{
-    // for extracting 'repeated float value'
-
-    float val = 0.0;
-
-    if (!pb_decode_fixed32(stream, &val))
-    {
-        printf("pb_decode_fixed32 failed\n");
-        return false;
-    }
-
-    printf("\t\t\t general_one_float:[%f]\n", val);
-
-    return true;
-}
-bool cb_decode_ir_loader_one_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
-{
-    // for extracting 'repeated float value'
-
-    float val = 0.0;
-
-    if (!pb_decode_fixed32(stream, &val))
-    {
-        printf("pb_decode_fixed32 failed\n");
-        return false;
-    }
-
-    printf("\t\t\t ir_loader:[%f]\n", val);
-
-    return true;
-}
-bool cb_decode_tone_match_one_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
-{
-    // for extracting 'repeated float value'
-
-    float val = 0.0;
-
-    if (!pb_decode_fixed32(stream, &val))
-    {
-        printf("pb_decode_fixed32 failed\n");
-        return false;
-    }
-
-    printf("\t\t\t tone_match:[%f]\n", val);
-
-    return true;
-}
-
-/* Callback function for pb_callback_t
- * This callback function will be called once during the encoding.
- * It will write out any number of float entries into binary without consuming
- * unnecessary memory. This is accomplished by fetching the float value one at
- * a time and encoding them immediately.
- */
-bool cb_encode_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
-{
-    // for adding 'repeated float value'
-
-    float next_val = 0.0;
-    cb_arg_add_float_t *p_arg = (cb_arg_add_float_t*) *arg;
-
-    /* printf("p_arg->total:%d\n", p_arg->total); */
-    for (int i = 0; i < p_arg->total; i++)
-    {
-        // Update new value
-    #if 1
-        if (p_arg->cb_get_val)
-        {
-            bool success = false;
-            success = p_arg->cb_get_val(&next_val);
-        }
-    #else
-        next_val = p_arg->default_val;
-    #endif
-        /* printf("\t cb_encoding[%d]:%f\n", i, next_val); */
-
-        /* This encodes the header for the field, based on the constant info
-         * from pb_field_t. */
-        if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
-        {
-            printf("pb_encode_tag failed\n");
-            return false;
-        }
-
-        /* This encodes the data for the field. */
-        if (!pb_encode_fixed32(stream, &next_val))
-        {
-            printf("pb_encode_fixed32 failed\n");
-            return false;
-        }
-    }
-
-    return true;
-}
-bool cb_encode_one_float_value(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
-{
-    // for adding 'optional float value'
-
-    if (NULL == *arg)
-    {
-        printf("cb_encode_one_float_value no arg error!\n");
-        return false;
-    }
-
-    float *val = (float*) *arg;
-    float next_val = *val;
-    printf("\t cb_encode_one_float_value:%f\n", next_val);
-
-    /* This encodes the header for the field, based on the constant info
-     * from pb_field_t. */
-    if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
-    {
-        printf("pb_encode_tag failed\n");
-        return false;
-    }
-
-    /* This encodes the data for the field. */
-    if (!pb_encode_fixed32(stream, &next_val))
-    {
-        printf("pb_encode_fixed32 failed\n");
-        return false;
-    }
-
-    return true;
-}
-bool cb_encode_ir_loader_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
-{
-    // for adding 'repeated float value'
-
-    float next_val = -1.6570091247558594e-05;
-
-    for (int i = 0; i < 2048; i++)
-    {
-        if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
-        {
-            printf("pb_encode_tag failed\n");
-            return false;
-        }
-
-        if (!pb_encode_fixed32(stream, &next_val))
-        {
-            printf("pb_encode_fixed32 failed\n");
-            return false;
-        }
-    }
-
-    return true;
-}
-bool cb_encode_tone_match_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
-{
-    // for adding 'repeated float value'
-
-    float next_val = 7.163822010625154e-05;
-
-    for (int i = 0; i < 2048; i++)
-    {
-        if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
-        {
-            printf("pb_encode_tag failed\n");
-            return false;
-        }
-
-        if (!pb_encode_fixed32(stream, &next_val))
-        {
-            printf("pb_encode_fixed32 failed\n");
-            return false;
-        }
-    }
-
-    return true;
 }
 
 void PreparePresetContent(presets_CPresetAllData* all_data)
