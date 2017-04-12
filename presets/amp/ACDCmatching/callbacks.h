@@ -34,10 +34,10 @@ extern bool cb_decode_tone_match_one_float_value(pb_istream_t *stream, const pb_
  * unnecessary memory. This is accomplished by fetching the float value one at
  * a time and encoding them immediately.
  */
-bool cb_encode_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
-bool cb_encode_one_float_value(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
-bool cb_encode_ir_loader_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
-bool cb_encode_tone_match_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+extern bool cb_encode_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+extern bool cb_encode_one_float_value(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+extern bool cb_encode_ir_loader_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+extern bool cb_encode_tone_match_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 
 #endif // _CALLBACKS_H_
 

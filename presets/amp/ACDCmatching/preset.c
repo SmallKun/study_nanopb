@@ -2,6 +2,7 @@
 #include <pb_encode.h>
 #include <pb_decode.h>
 #include "preset.pb.h"
+#include "common.h"
 #include "callbacks.h"
 
 // ********************************** IMPORTANT **********************************
@@ -9,9 +10,6 @@
 // will crash during initialization, we should use nanopb's pb_callback_t for
 // large array/message instead
 // *******************************************************************************
-/* #define MAX_FLOAT_ARRAY_SIZE (2048) */
-/* #define MAX_FLOAT_ARRAY_SIZE (512) */
-/* #define MAX_FLOAT_ARRAY_SIZE (128) */
 
 // ********************************** IMPORTANT **********************************
 // If you encounter "stream full" errors during encoding, please increase these 
@@ -20,100 +18,6 @@
 #define ENCODE_DECODE_BUFFER_SIZE (30 * 1024) // 30 KB buffer
 static uint8_t buffer_encode[ENCODE_DECODE_BUFFER_SIZE];
 static uint8_t buffer_decode[ENCODE_DECODE_BUFFER_SIZE];
-
-#if 0 // float values generator
-static const float firstFloat = 0.0020000000949949026;
-static const float floatDiff = 0.001;
-static float next_float_val(bool reset)
-{
-    static float next = firstFloat;
-    if (reset)
-    {
-        next = firstFloat;
-        return next;
-    }
-
-    next += floatDiff;
-
-    return next;
-}
-
-static bool gen_float_val(float* ret)
-{
-    static uint32_t idx = 0;
-    float next = 0;
-
-    if (idx == 4096)
-    {
-        idx = 0;
-        next = next_float_val(true);
-        *ret = next;
-
-        return false;
-    }
-    else
-    {
-        idx++;
-        next = next_float_val(false);
-        *ret = next;
-
-        return true;
-    }
-}
-#endif // float values generator
-
-void hexDump(char *desc, void *addr, int len)
-{
-    int i;
-    unsigned char buff[17];
-    unsigned char *pc = (unsigned char*)addr;
-
-    // Output description if given.
-    if (desc != NULL)
-        printf ("%s:\n", desc);
-
-    if (len == 0) {
-        printf("  ZERO LENGTH\n");
-        return;
-    }
-    if (len < 0) {
-        printf("  NEGATIVE LENGTH: %i\n",len);
-        return;
-    }
-
-    // Process every byte in the data.
-    for (i = 0; i < len; i++) {
-        // Multiple of 16 means new line (with line offset).
-
-        if ((i % 16) == 0) {
-            // Just don't print ASCII for the zeroth line.
-            if (i != 0)
-                printf ("  %s\n", buff);
-
-            // Output the offset.
-            printf ("  %04x ", i);
-        }
-
-        // Now the hex code for the specific character.
-        printf (" %02x", pc[i]);
-
-        // And store a printable ASCII character for later.
-        if ((pc[i] < 0x20) || (pc[i] > 0x7e))
-            buff[i % 16] = '.';
-        else
-            buff[i % 16] = pc[i];
-        buff[(i % 16) + 1] = '\0';
-    }
-
-    // Pad out last line if not exactly 16 characters.
-    while ((i % 16) != 0) {
-        printf ("   ");
-        i++;
-    }
-
-    // And print the final ASCII bit.
-    printf ("  %s\n", buff);
-}
 
 void PrintPreset(const presets_CPresetAllData* all_data)
 {
