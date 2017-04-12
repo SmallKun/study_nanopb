@@ -115,7 +115,7 @@ void PrintPreset(const presets_CPresetAllData* all_data)
                             printf("\t\t param->id:%d\n", param->id);
 
                         // ********************************** IMPORTANT **********************************
-                        // param->value will be printed in callback function cb_decode_float_value
+                        // param->value will be printed in callback function cb_decode_one_float_value
                         // *******************************************************************************
                     #if 0
                         for (int k = 0; k < param->value_count; k++)
@@ -198,7 +198,7 @@ void PrintPreset(const presets_CPresetAllData* all_data)
     // ===========================
 }
 
-#if 1 // float values generator
+#if 0 // float values generator
 static const float firstFloat = 0.0020000000949949026;
 static const float floatDiff = 0.001;
 static float next_float_val(bool reset)
@@ -246,16 +246,17 @@ typedef struct _cb_arg_add_float_t
     float default_val;
     bool (*cb_get_val)(float*);
 } cb_arg_add_float_t;
-static cb_arg_add_float_t cb_arg_type_1 = {1, 0.001, gen_float_val};
+/* static cb_arg_add_float_t cb_arg_type_1 = {1, 0.001, gen_float_val}; */
 /* static cb_arg_add_float_t cb_arg_type_512 = {512, 0.005, gen_float_val}; */
 /* static cb_arg_add_float_t cb_arg_type_2048 = {2048, 7.025, gen_float_val}; */
+static float cb_arg_next_float_val = 0.33333;
 
 /* Callback function for pb_callback_t
  * This callback function will be called once for each float value while
  * decoding. The float value will be printed out immediately, so that
  * no memory has to be allocated for them.
  */
-bool cb_decode_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
+bool cb_decode_one_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
 {
     // for extracting 'repeated float value'
 
@@ -267,11 +268,11 @@ bool cb_decode_float_value(pb_istream_t *stream, const pb_field_t *field, void *
         return false;
     }
 
-    printf("\t\t\t one_float:[%f]\n", val);
+    printf("\t\t\t general_one_float:[%f]\n", val);
 
     return true;
 }
-bool cb_decode_ir_loader_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
+bool cb_decode_ir_loader_one_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
 {
     // for extracting 'repeated float value'
 
@@ -287,7 +288,7 @@ bool cb_decode_ir_loader_float_value(pb_istream_t *stream, const pb_field_t *fie
 
     return true;
 }
-bool cb_decode_tone_math_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
+bool cb_decode_tone_match_one_float_value(pb_istream_t *stream, const pb_field_t *field, void **arg)
 {
     // for extracting 'repeated float value'
 
@@ -310,6 +311,77 @@ bool cb_decode_tone_math_float_value(pb_istream_t *stream, const pb_field_t *fie
  * unnecessary memory. This is accomplished by fetching the float value one at
  * a time and encoding them immediately.
  */
+bool cb_encode_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+    // for adding 'repeated float value'
+
+    float next_val = 0.0;
+    cb_arg_add_float_t *p_arg = (cb_arg_add_float_t*) *arg;
+
+    /* printf("p_arg->total:%d\n", p_arg->total); */
+    for (int i = 0; i < p_arg->total; i++)
+    {
+        // Update new value
+    #if 1
+        if (p_arg->cb_get_val)
+        {
+            bool success = false;
+            success = p_arg->cb_get_val(&next_val);
+        }
+    #else
+        next_val = p_arg->default_val;
+    #endif
+        /* printf("\t cb_encoding[%d]:%f\n", i, next_val); */
+
+        /* This encodes the header for the field, based on the constant info
+         * from pb_field_t. */
+        if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
+        {
+            printf("pb_encode_tag failed\n");
+            return false;
+        }
+
+        /* This encodes the data for the field. */
+        if (!pb_encode_fixed32(stream, &next_val))
+        {
+            printf("pb_encode_fixed32 failed\n");
+            return false;
+        }
+    }
+
+    return true;
+}
+bool cb_encode_one_float_value(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+    // for adding 'optional float value'
+
+    if (NULL == *arg)
+    {
+        printf("cb_encode_one_float_value no arg error!\n");
+        return false;
+    }
+
+    float *val = (float*) *arg;
+    float next_val = *val;
+    printf("\t cb_encode_one_float_value:%f\n", next_val);
+
+    /* This encodes the header for the field, based on the constant info
+     * from pb_field_t. */
+    if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
+    {
+        printf("pb_encode_tag failed\n");
+        return false;
+    }
+
+    /* This encodes the data for the field. */
+    if (!pb_encode_fixed32(stream, &next_val))
+    {
+        printf("pb_encode_fixed32 failed\n");
+        return false;
+    }
+
+    return true;
+}
 bool cb_encode_ir_loader_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
 {
     // for adding 'repeated float value'
@@ -357,58 +429,6 @@ bool cb_encode_tone_match_float_values(pb_ostream_t *stream, const pb_field_t *f
     return true;
 }
 
-/* Callback function for pb_callback_t
- * This callback function will be called once during the encoding.
- * It will write out any number of float entries into binary without consuming
- * unnecessary memory. This is accomplished by fetching the float value one at
- * a time and encoding them immediately.
- */
-bool cb_encode_float_values(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
-{
-    // for adding 'repeated float value'
-
-    float next_val = 0.0;
-    cb_arg_add_float_t *p_arg = (cb_arg_add_float_t*) *arg;
-
-    /* printf("p_arg->total:%d\n", p_arg->total); */
-    for (int i = 0; i < p_arg->total; i++)
-    {
-        // Update new value
-    #if 0
-        if (p_arg->cb_get_val)
-        {
-            bool success = false;
-            success = p_arg->cb_get_val(&next_val);
-        }
-    #else
-        next_val = p_arg->default_val;
-    #endif
-
-        /* printf("\t cb_encoding[%d]:%f\n", i, next_val); */
-
-        // ********************************** IMPORTANT **********************************
-        /* This encodes the header for the field, based on the constant info
-         * from pb_field_t. */
-        // *******************************************************************************
-        if (!pb_encode_tag(stream, PB_WT_32BIT, field->tag))
-        {
-            printf("pb_encode_tag failed\n");
-            return false;
-        }
-
-        // ********************************** IMPORTANT **********************************
-        /* This encodes the data for the field. */
-        // *******************************************************************************
-        if (!pb_encode_fixed32(stream, &next_val))
-        {
-            printf("pb_encode_fixed32 failed\n");
-            return false;
-        }
-    }
-
-    return true;
-}
-
 void PreparePresetContent(presets_CPresetAllData* all_data)
 {
     // ======== data.json ========
@@ -442,10 +462,14 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
             // ********************************** IMPORTANT **********************************
             // param->value will be encoded in callback function cb_encode_float_values
             // *******************************************************************************
-            /* param->value_count = 1; */
-            /* param->value[0] = 0.0020000000949949026; */
+        #if 0
             param->value.funcs.encode = &cb_encode_float_values;
             param->value.arg = &cb_arg_type_1;
+            /* param->value.arg = &cb_arg_type_512; */
+        #else
+            param->value.funcs.encode = &cb_encode_one_float_value;
+            param->value.arg = &cb_arg_next_float_val;
+        #endif
         }
     }
 
@@ -457,43 +481,21 @@ void PreparePresetContent(presets_CPresetAllData* all_data)
     strncpy(irLoader_item->wavFileName, "55661234455590345", strlen("55661234455590345"));
     irLoader_item->has_wavSampleRate = true;
     irLoader_item->wavSampleRate = 44100;
-#if 1
     // "bias.IRLoader"'s params id 8 have 2048 values, so add additional 2047 params
     // Note : Since FW limitation, we only need the first 512 float been encoded into binary
     presets_CParam* irLoader_param_8 = &irLoader_item->params[8];
     irLoader_param_8->value.funcs.encode = &cb_encode_ir_loader_float_values;
     irLoader_param_8->value.arg = NULL;
-#else
-    // "bias.IRLoader"'s params id 8 have 2048 values, so add additional 2047 params
-    // Note : Since FW limitation, we only need the first 512 float been encoded into binary
-    presets_CParam* irLoader_param_8 = &irLoader_item->params[8];
-    irLoader_param_8->value_count = MAX_FLOAT_ARRAY_SIZE;
-    for (int i = 0; i < (MAX_FLOAT_ARRAY_SIZE-1); i++)
-    {
-        irLoader_param_8->value[i] = -1.6570091247558594e-05;
-    }
-#endif
 
     // special section for "bias.toneMatching", idx = 7
     presets_CSigPath_CBlocks_CItem* toneMatch_item = &dataJson->sigPath.blocks.items[7];
     toneMatch_item->has_IsAudioRouting = true;
     toneMatch_item->IsAudioRouting = false;
-#if 1
     // "bias.toneMatching"'s params id 0 have 2048 values, so add additional 2047 params
     // Note : Since FW limitation, we only need the first 512 float been encoded into binary
     presets_CParam* toneMatch_param_0 = &toneMatch_item->params[0];
     toneMatch_param_0->value.funcs.encode = &cb_encode_tone_match_float_values;
     toneMatch_param_0->value.arg = NULL;
-#else
-    // "bias.toneMatching"'s params id 0 have 2048 values, so add additional 2047 params
-    // Note : Since FW limitation, we only need the first 512 float been encoded into binary
-    presets_CParam* toneMatch_param_0 = &toneMatch_item->params[0];
-    toneMatch_param_0->value_count = MAX_FLOAT_ARRAY_SIZE;
-    for (int i = 0; i < (MAX_FLOAT_ARRAY_SIZE-1); i++)
-    {
-        toneMatch_param_0->value[i] = 7.163822010625154e-05;
-    }
-#endif
     // ===========================
 
     // ======== meta.json ========
@@ -619,13 +621,13 @@ int main()
         {
             for (int j = 0; j < 50; j++)
             {
-                decode_msg.dataJson.sigPath.blocks.items[i].params[j].value.funcs.decode = &cb_decode_float_value;
+                decode_msg.dataJson.sigPath.blocks.items[i].params[j].value.funcs.decode = &cb_decode_one_float_value;
             }
         }
         printf("set default decoder cb(s) done\n");
         printf("set ir_loader and tone_match decoder cb(s)\n");
-        decode_msg.dataJson.sigPath.blocks.items[5].params[8].value.funcs.decode = &cb_decode_ir_loader_float_value;
-        decode_msg.dataJson.sigPath.blocks.items[7].params[0].value.funcs.decode = &cb_decode_tone_math_float_value;
+        decode_msg.dataJson.sigPath.blocks.items[5].params[8].value.funcs.decode = &cb_decode_ir_loader_one_float_value;
+        decode_msg.dataJson.sigPath.blocks.items[7].params[0].value.funcs.decode = &cb_decode_tone_match_one_float_value;
         printf("set ir_loader and tone_match decoder cb(s) done\n");
         // ------------------------------------------------------
 
