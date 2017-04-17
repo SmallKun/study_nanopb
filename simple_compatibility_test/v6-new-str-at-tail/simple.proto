@@ -1,0 +1,12 @@
+// A very simple protocol definition, consisting of only
+// one message.
+
+syntax = "proto2";
+
+message SimpleMessage {
+    optional int32 num1 = 1;
+    optional int32 num2 = 2;
+    optional int32 num3 = 3;
+    optional string name1 = 4;
+    optional string name2 = 5;
+}

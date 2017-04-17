@@ -1,0 +1,254 @@
+[int_test_01]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional int32 num4 = 4;
+    }
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+    }
+result:
+    num1:14!
+    num2:15!
+    num3:16!
+---------------------------------------------------------
+
+[int_test_02]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+    }
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional int32 num4 = 4;
+    }
+result:
+    num1:14!
+    num2:15!
+    num3:16!
+---------------------------------------------------------
+
+[int_test_03]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num4 = 3;
+        optional int32 num3 = 4;
+    }
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+    }
+
+result:
+    num1:14!
+    num2:15!
+    num3:17!
+---------------------------------------------------------
+
+[int_test_04]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num4 = 3;
+        optional int32 num3 = 4;
+    }
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional int32 num4 = 4;
+    }
+result:
+    num1:14!
+    num2:15!
+    num3:17!
+    num4:16!
+---------------------------------------------------------
+
+[int_test_05]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional int32 num4 = 4;
+    }
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num4 = 3;
+        optional int32 num3 = 4;
+    }
+result:
+    num1:14!
+    num2:15!
+    num3:17!
+    num4:16!
+---------------------------------------------------------
+
+[str_test_01]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+    }
+
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+    }
+
+result:
+    num1:14!
+    num2:15!
+    num3:16!
+---------------------------------------------------------
+
+[str_test_02]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional string name2 = 3;
+        optional int32 num3 = 4;
+        optional string name1 = 5;
+    }
+
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+    }
+
+result:
+    Decoding failed: invalid wire_type
+---------------------------------------------------------
+
+[str_test_03]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+        optional string name2 = 5;
+    }
+
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+    }
+
+result:
+    num1:14!
+    num2:15!
+    num3:16!
+    name1:"the_name1"!
+---------------------------------------------------------
+
+[str_test_04]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+    }
+
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+        optional string name2 = 5;
+    }
+
+result:
+    num1:14!
+    num2:15!
+    num3:16!
+    name1:"the_name1"!
+---------------------------------------------------------
+
+[str_test_05]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional string name2 = 3;
+        optional int32 num3 = 4;
+        optional string name1 = 5;
+    }
+
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+    }
+
+result:
+    Decoding failed: invalid wire_type
+---------------------------------------------------------
+
+[str_test_06]
+---------------------------------------------------------
+data.bin:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional int32 num3 = 3;
+        optional string name1 = 4;
+    }
+
+decoder:
+    message SimpleMessage {
+        optional int32 num1 = 1;
+        optional int32 num2 = 2;
+        optional string name2 = 3;
+        optional int32 num3 = 4;
+        optional string name1 = 5;
+    }
+
+result:
+    Decoding failed: end-of-stream
+---------------------------------------------------------
+
+
